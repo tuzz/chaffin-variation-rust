@@ -1,4 +1,5 @@
 use lehmer::Lehmer;
+use chrono::Local;
 
 //const N: usize = 4;
 //const FACT: [usize; N + 1] = [1, 1, 2, 6, 24];
@@ -53,7 +54,10 @@ fn main() {
         search(&mut seen, 0, &table, &reverse, 0, w, 0, &mut max_perms, &best_perms);
         best_perms[w] = max_perms;
 
-        println!("waste {}, max perms {}", w, max_perms);
+        println!("{}", Local::now().format("%Y-%m-%d:%H:%M:%S"));
+        println!("{} wasted characters, at most {} permutations", w, max_perms);
+        println!();
+
 
         if max_perms == FACT[N] / 2 {
             println!("shortest superpermutation: {}", ((N - 1) + FACT[N] / 2 + w) * 2 - 1);

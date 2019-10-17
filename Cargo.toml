@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 lehmer = "3.0.0"
+chrono = "0.4.9"
