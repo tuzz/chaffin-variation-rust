@@ -49,9 +49,10 @@ fn main() {
 
     let mut seen = [false; FACT[N]];
     let mut max_perms = 0;
+    let mut string = [0; FACT[N] * 2];
 
     for w in 0.. {
-        search(&mut seen, 0, &table, &reverse, 0, w, 0, &mut max_perms, &best_perms);
+        search(&mut seen, 0, &table, &reverse, 0, w, 0, &mut max_perms, &best_perms, &mut string, 0);
         best_perms[w] = max_perms;
 
         println!("{}", Local::now().format("%Y-%m-%d:%H:%M:%S"));
@@ -66,12 +67,14 @@ fn main() {
     }
 }
 
-fn search(seen: &mut [bool; FACT[N]], id: usize, table: &[[usize; SIZE]; FACT[N]], reverse: &[usize; FACT[N]], cur_waste: usize, max_waste: usize, perms: usize, max_perms: &mut usize, best_perms: &[usize; FACT[N]]) {
+fn search(seen: &mut [bool; FACT[N]], id: usize, table: &[[usize; SIZE]; FACT[N]], reverse: &[usize; FACT[N]], cur_waste: usize, max_waste: usize, perms: usize, max_perms: &mut usize, best_perms: &[usize; FACT[N]], string: &mut [usize; FACT[N] * 2], cursor: usize) {
     seen[id] = true;
     seen[reverse[id]] = true;
+    string[cursor] = id;
 
     if *max_perms == perms {
         *max_perms += 1;
+        print_string(string, cursor);
     }
 
     for chunk in table[id].chunks(2) {
@@ -99,9 +102,23 @@ fn search(seen: &mut [bool; FACT[N]], id: usize, table: &[[usize; SIZE]; FACT[N]
             continue;
         }
 
-        search(seen, next_id, table, reverse, next_waste, max_waste, next_perms, max_perms, best_perms);
+        search(seen, next_id, table, reverse, next_waste, max_waste, next_perms, max_perms, best_perms, string, cursor + 1);
     }
 
     seen[id] = false;
     seen[reverse[id]] = false;
+}
+
+fn print_string(string: &[usize; FACT[N] * 2], cursor: usize) {
+    println!("{}", Local::now().format("%Y-%m-%d:%H:%M:%S"));
+    for s in Lehmer::from_decimal(0, N).to_permutation() {
+        print!("{}", s);
+    }
+
+    for c in 1..=cursor {
+        let perm = Lehmer::from_decimal(string[c], N).to_permutation();
+        print!("{}", perm.last().unwrap());
+    }
+    println!();
+    println!();
 }
