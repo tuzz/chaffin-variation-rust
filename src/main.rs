@@ -13,6 +13,8 @@ const N: usize = 6;
 const FACT: [usize; N + 1] = [1, 1, 2, 6, 24, 120, 720];
 const SIZE: usize = (1 + 2 + 6 + 24 + 120) * 2;
 
+const BENCHMARK: bool = true;
+
 fn main() {
     let mut table = [[0; SIZE]; FACT[N]];
     let mut reverse = [0; FACT[N]];
@@ -59,6 +61,9 @@ fn main() {
         println!("{} wasted characters, at most {} permutations", w, max_perms);
         println!();
 
+        if BENCHMARK && w == 52 {
+            break;
+        }
 
         if max_perms == FACT[N] / 2 {
             println!("shortest superpermutation: {}", ((N - 1) + FACT[N] / 2 + w) * 2 - 1);
