@@ -13,7 +13,7 @@ const N: usize = 6;
 const FACT: [usize; N + 1] = [1, 1, 2, 6, 24, 120, 720];
 const SIZE: usize = (1 + 2 + 6 + 24 + 120) * 2;
 
-const BENCHMARK: bool = true;
+const BENCHMARK: bool = false;
 
 fn main() {
     let mut table = [[0; SIZE]; FACT[N]];
