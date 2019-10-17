@@ -116,13 +116,18 @@ fn search(seen: &mut [bool; FACT[N]], id: usize, table: &[[usize; SIZE]; FACT[N]
 
 fn print_string(string: &[usize; FACT[N] * 2], cursor: usize) {
     println!("{}", Local::now().format("%Y-%m-%d:%H:%M:%S"));
-    for s in Lehmer::from_decimal(0, N).to_permutation() {
-        print!("{}", s);
-    }
 
-    for c in 1..=cursor {
+    let mut last = 0;
+    print!("{}", last + 1);
+
+    for c in 0..=cursor {
         let perm = Lehmer::from_decimal(string[c], N).to_permutation();
-        print!("{}", perm.last().unwrap());
+
+        for p in perm.iter().skip_while(|p| **p != last).skip(1) {
+            print!("{}", p + 1);
+        }
+
+        last = *perm.last().unwrap();
     }
     println!();
     println!();
